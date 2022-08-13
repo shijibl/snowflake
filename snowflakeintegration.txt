@@ -1,0 +1,35 @@
+Create a Storage Integration
+Syntax:
+CREATE [ OR REPLACE ] STORAGE INTEGRATION [IF NOT EXISTS] <storage_integration_name>
+TYPE = EXTERNAL_STAGE
+cloudProviderParams
+ENABLED = { TRUE | FALSE }
+AZURE_TENANT_ID = '<tenant_id>'
+STORAGE_ALLOWED_LOCATIONS = ('<cloud>://<bucket>/<path>/', '<cloud>://<bucket>/<path>/')
+[ STORAGE_BLOCKED_LOCATIONS = ('<cloud>://<bucket>/<path>/', '<cloud>://<bucket>/<path>/') ]
+[ COMMENT = '<string_literal>' ]
+
+Working Code:
+CREATE STORAGE INTEGRATION storage_integn_name
+TYPE = EXTERNAL_STAGE
+STORAGE_PROVIDER = AZURE
+ENABLED = TRUE
+AZURE_TENANT_ID = '<tenant_id>'
+STORAGE_ALLOWED_LOCATIONS = (
+'azure://<path1>/',
+'azure://<path2>/');
+
+Create a Stage for loading data from ADLS Files into Snowflake table.
+Syntax:
+CREATE [ OR REPLACE ] [ TEMPORARY ] STAGE [ IF NOT EXISTS ] <internal_stage_name>
+[ FILE_FORMAT = ( { FORMAT_NAME = '<file_format_name>' | TYPE = { CSV | JSON | AVRO | ORC | PARQUET | XML } [ formatTypeOptions ] ) } ]
+[ COPY_OPTIONS = ( copyOptions ) ]
+[ COMMENT = '<string_literal>' ]
+
+Working Code:
+CREATE or replace STAGE Stage_Name
+URL = 'azure://<path>/'
+STORAGE_INTEGRATION = storage_integn_name;
+
+Grant usage on Integration
+GRANT USAGE ON INTEGRATION <storage_integn_name>to role Role_name;
